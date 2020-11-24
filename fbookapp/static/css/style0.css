@@ -1,0 +1,20 @@
+
+div.container{
+    width: 800px;
+    padding: 30px;
+    min-height: 700px;
+    margin: 0 auto; 
+    display: flex;
+    flex-wrap: nowrap;
+    align-items:flex-start;
+   
+}
+
+div.content1{
+    display: flex;
+    align-items:flex-start;
+    flex-wrap: wrap; 
+    height: 575px;
+    width: 400px;
+ 
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style0.css' %}">    
+    <script src="{% static 'js/script.js' %}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+
+div.container{
+    width: 800px;
+    padding: 30px;
+    min-height: 700px;
+    margin: 0 auto; 
+    display: flex;
+    flex-wrap: nowrap;
+    align-items:flex-start;
+   
+}
+
+div.content1{
+    display: flex;
+    align-items:flex-start;
+    flex-wrap: wrap; 
+    height: 575px;
+    width: 400px;
+ 
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#!"><p> Hello, {{first_name}} {{last_name}}</p></a>
+      
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+    <div class="container">
+
+            <div class="content1">
+                <form action="addbook" method="post" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for=""> Title</label>
+                        <input type="text" class="form-control" id="" placeholder="title" name = "title">title
+                      </div>
+                      <div class="form-group">
+                        <label for="">description</label>
+                        <input type="text" class="form-control" id="" placeholder="desctiption" name="desc">
+                      </div>
+                   
+                    <button type="submit" class="btn btn-outline-info">Submit</button>
+                    <a class="btn btn-outline-info" href="books" role="button">Cancel</a>
+                  </form>
+        
+                  {% if messages %}
+                  <ul class="messages">    
+                      {% for message in messages %}    
+                          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+            </div>
+
+
+
+            <div class="content">
+               <h3>All books</h3>
+
+               {% for item in objs %}
+                        <a class="" href="books/{{item.id}}" >{{ item.title }}</a>
+                        <p> added by {{ item.uploaded_by.firstname}}  {{ item.uploaded_by.lastname}}</p>
+                        
+              {% if item.uploaded_by.id ==  id %}
+             <p> this one of your favoriets</p>
+
+              {% endif %}
+
+            
+              {% if item.uploaded_by.id !=  id %}
+             <p> <a class="" href="favorite/{{ item.id }}" > Add to your favoriets</a></p> 
+               {% endif %}
+ 
+
+                       {% endfor %}
+                    </div>
+                
+    </div>
+</body>
+</html>

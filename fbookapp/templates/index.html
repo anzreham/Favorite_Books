@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+
+div.container{
+    width: 800px;
+    padding: 30px;
+    min-height: 700px;
+    margin: 0 auto; 
+    display: flex;
+    flex-wrap: nowrap;
+    align-items:flex-start;
+   
+}
+
+div.content{
+    display: flex;
+    align-items:flex-start;
+    flex-wrap: wrap; 
+    height: 575px;
+    width: 400px;
+ 
+}
+form{
+    width: 330px;
+}
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 
+</head>
+<body>
+    <nav class="navbar navbar-light bg-dark">
+        <a class="navbar-brand" href="#!">Home</a>
+      </nav>
+ <div class="container">
+
+    <div class="content">
+      
+        <form action="register" method="post" id="new_user_form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="">firstname</label>
+                <input type="text" class="form-control" id="" placeholder="firstname" name = "firstname">
+              </div>
+              <div class="form-group">
+                <label for="">lastname</label>
+                <input type="text" class="form-control" id="" placeholder="lastname" name="lastname">
+              </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            
+
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="pass">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">Confirm Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="passconf">
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputPassword1"></label>
+                <input type="hidden" class="form-control" id="takenemail" placeholder="" name="takenemailname">
+              </div>
+             
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+
+  
+
+          {% block javascript %}
+   <script>
+      $(document).ready(function(){
+        $("#email").change(function(){
+        var email = $(this).val() ;
+
+
+      
+      $.ajax({
+     csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+
+                        url: 'emailvalidate',
+                        data: {
+                                'email' : email
+                               },
+                        type: 'POST',
+                        dataType : 'json',
+                        success: function(data){
+                          if ( data.is_taken){
+               alert("this email alresy is taken");
+               $("#takenemail").val('taken');
+                                    }
+                            console.log(data);
+                        }
+                    });
+
+
+                  });
+      });
+
+      </script>
+          {% endblock javascript %}
+
+
+
+          {% if messages %}
+          <ul class="messages">    
+              {% for message in messages %}    
+                  <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+              {% endfor %}
+          </ul>
+          {% endif %}
+
+    </div>
+
+
+    <div class="content">
+<form action="log" method="post">
+    {% csrf_token %}
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="pass">
+            </div>
+
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
+
+
+ </div>  
+
+ 
+</body>
+
+</html>
